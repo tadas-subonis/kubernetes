@@ -33,6 +33,8 @@ const (
 	caCertsVolumeName       = "ca-certs"
 	caCertsVolumePath       = "/etc/ssl/certs"
 	caCertsPkiVolumeName    = "ca-certs-etc-pki"
+	cloudConfigKubernetesVolumeName       = "kubernetes-config"
+	cloudConfigKubernetesVolumePath      = "/etc/kubernetes"
 	flexvolumeDirVolumeName = "flexvolume-dir"
 	flexvolumeDirVolumePath = "/usr/libexec/kubernetes/kubelet-plugins/volume/exec"
 )
@@ -59,6 +61,10 @@ func getHostPathVolumesForTheControlPlane(cfg *kubeadmapi.MasterConfiguration) c
 	if len(cfg.Etcd.Endpoints) != 0 {
 		etcdVols, etcdVolMounts := getEtcdCertVolumes(cfg.Etcd)
 		mounts.AddHostPathMounts(kubeadmconstants.KubeAPIServer, etcdVols, etcdVolMounts)
+	}
+	
+	if len(cfg.CloudProvider) != 0 
+	        mounts.NewHostPathMount(kubeadmconstants.KubeAPIServer, cloudConfigKubernetesVolumeName, cloudConfigKubernetesVolumePath, cloudConfigKubernetesVolumePath, true, &hostPathDirectoryOrCreate)
 	}
 
 	// HostPath volumes for the controller manager
